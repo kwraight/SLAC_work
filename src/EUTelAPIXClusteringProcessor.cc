@@ -1,4 +1,4 @@
-// Version: $Id$
+// Version: $Id: EUTelAPIXClusteringProcessor.cc 2488 2013-03-21 10:45:22Z hamnett $
    
 #ifdef USE_GEAR
 
@@ -130,6 +130,7 @@ void EUTelAPIXClusteringProcessor::init () {
 	streamlog_out( MESSAGE4 ) << "Initing" << endl;
 	streamlog_out(MESSAGE4) << "Histofile is: " << _histoInfoFileName << endl;
 	_iRun = 0;
+	_iEvt = 0;
   // this method is called only once even when the rewind is active
   // usually a good idea to
 
@@ -219,6 +220,12 @@ void EUTelAPIXClusteringProcessor::modifyEvent( LCEvent * /* event */ ){
 }
 
 void EUTelAPIXClusteringProcessor::processEvent (LCEvent * event) {
+	if (_iEvt % 50 == 0)
+	streamlog_out( MESSAGE4 ) << "Processing event "
+		<< setw(6) << setiosflags(ios::right) << event->getEventNumber() << " in run "
+		<< setw(6) << setiosflags(ios::right) << setfill('0')  << event->getRunNumber() << setfill(' ')
+		<< " (Total = " << setw(10) << _iEvt << ")" << resetiosflags(ios::left) << endl;
+	++_iEvt;
 	
 	/* -------------- */
 
@@ -237,7 +244,7 @@ void EUTelAPIXClusteringProcessor::processEvent (LCEvent * event) {
 	try {
 		event->getCollection( _zsDataCollectionName ) ;
 	} catch (lcio::DataNotAvailableException& e ) {
-		streamlog_out ( DEBUG4 ) << "No ZS data found in the event " << endl;
+		streamlog_out ( DEBUG4 ) << "No ZS data found in the event " << _iEvt << endl;
           return;
 	}
 	
@@ -300,7 +307,7 @@ void EUTelAPIXClusteringProcessor::Clustering(LCEvent * evt, LCCollectionVec * c
 	
 	//Data Output
 	//CellIDEncoder<TrackerPulseImpl> idClusterEncoder(EUTELESCOPE::ZSAPIXCLUSTERENCODING, clusterCollection);
-        CellIDEncoder< TrackerPulseImpl > zsDataEncoder ( "sensorID:5,clusterID:12,xSeed:9,ySeed:10,xCluSize:9,yCluSize:9,type:5", clusterCollection );	
+        CellIDEncoder< TrackerPulseImpl > zsDataEncoder ( "sensorID:5,clusterID:14,xSeed:10,ySeed:10,xCluSize:9,yCluSize:9,type:5", clusterCollection );	
 
 	//Dummy collection
 	
@@ -320,7 +327,7 @@ void EUTelAPIXClusteringProcessor::Clustering(LCEvent * evt, LCCollectionVec * c
 	 }
 	 dummyCollectionInitialSize = sparseClusterCollectionVec->size();
 	  
-	 CellIDEncoder<TrackerDataImpl> idClusterEncoder( "sensorID:5,clusterID:12,sparsePixelType:5,type:6", sparseClusterCollectionVec  );
+	 CellIDEncoder<TrackerDataImpl> idClusterEncoder( "sensorID:5,clusterID:14,sparsePixelType:5,type:6", sparseClusterCollectionVec  );
 	
 	 //One loop for each sensorplane
 	 for ( unsigned int i = 0 ; i < zsInputCollectionVec->size(); i++ ) 
