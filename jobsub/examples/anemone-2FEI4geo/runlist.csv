@@ -1,3 +1,4 @@
-RunNumber,BeamEnergy,Threshold
+RunNumber,BeamEnergy,Threshold,GearGeoFile
 
-0017,5.0,6.0
+0017,5.0,6.0,gear_desy2012_04_anemone_DBM_batch0.xml
+447,12.5,6.0,gear_SLAC_single_4_5_14.xml

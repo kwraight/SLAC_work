@@ -17,10 +17,12 @@
 
    <execute>
       <processor name="AIDA"/>
-      <processor name="Mimosa26EUTelAutoPedestalNoiseProcessor"/>
+      <!--processor name="Mimosa26EUTelAutoPedestalNoiseProcessor"/-->
       <processor name="LoadHotPixelDB"/>
-      <processor name="Clustering"/>
-      <processor name="Correlator"/>
+      <processor name="ClusteringMimosa"/>
+      <processor name="NoiseMasker"/>
+      <processor name="NoiseRemover"/>
+      <!--processor name="Correlator"/-->
       <processor name="Save"/>
       <processor name="MyEUTelUtilityPrintEventNumber"/>
    </execute>
@@ -33,6 +35,19 @@
       <parameter name="SupressCheck" value="false"/>
       <parameter name="Verbosity" value="@Verbosity@"/>
    </global>
+	
+
+    <processor name="NoiseMasker" type="EUTelProcessorNoisyClusterMasker">
+                     <parameter name="InputCollectionName"  type="string" lcioInType="TrackerPulse">  cluster_m26 </parameter>
+                     <parameter name="HotPixelCollectionName"  type="string"> hotpixel_m26 </parameter>
+    </processor>
+     
+     
+    <processor name="NoiseRemover" type="EUTelProcessorNoisyClusterRemover">
+             <parameter name="InputCollectionName"  type="string" lcioInType="TrackerPulse">  cluster_m26 </parameter>
+             <parameter name="OutputCollectionName" type="string" lcioOutType="TrackerPulse"> cluster_m26_free </parameter>
+     </processor>
+
 
  <processor name="AIDA" type="AIDAProcessor">
  <!--Processor that handles AIDA files. Creates on directory per processor.  Processors only need to create and fill the histograms, clouds and tuples. Needs to be the first ActiveProcessor-->
@@ -83,10 +98,23 @@
   <!--Initialization of a data file handler-->
   <!--parameter name="DataFileHandler" type="StringVec" value="conditionsName"/-->
   <!--Initialization of a simple conditions file handler-->
-  <parameter name="SimpleFileHandler" type="StringVec"> hotpixel_m26 @DatabasePath@/run@HotPixelRunNumber@-hotpixel.slcio hotpixel_m26 </parameter>
+  <parameter name="SimpleFileHandler" type="StringVec"> hotpixel_m26 @DatabasePath@/run@HotPixelRunNumber@-hotpixel-m26-db.slcio hotpixel_m26 </parameter>
   <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
   <!--parameter name="Verbosity" type="string" value=""/-->
 </processor>
+
+    <processor name="ClusteringMimosa" type="EUTelProcessorGeometricClustering">
+        <!--EUTelClusteringProcessor is looking for clusters into a calibrated pixel matrix.-->
+        <!--        INPUT / OUTPUT    -->
+        <!--Input calibrated data not zero suppressed collection name-->
+        <parameter name="ZSDataCollectionName" type="string" lcioInType="TrackerData"> zsdata_m26 </parameter>
+            <parameter name="PulseCollectionName" type="string" lcioOutType="TrackerPulse"> cluster_m26 </parameter>
+        <!--        HISTOGRAMMING    -->
+        <!--Switch on or off the histogram filling-->
+        <parameter name="HistogramFilling" type="bool" value="true"/>
+        <!--This is the name of the histogram information file-->
+        <parameter name="HistoInfoFileName" type="string" value="@HistoInfoFile@"/>
+    </processor>
 
  <processor name="Clustering" type="EUTelClusteringProcessor">
  <!--EUTelClusteringProcessor is looking for clusters into a calibrated pixel matrix.-->

@@ -8,7 +8,7 @@
       <processor name="AIDA"/>
       <processor name="UniversalNativeReader"/>
       <processor name="HotPixelMaskerM26"/>
-      <processor name="HotPixelMaskerAPIX"/>
+      <!--processor name="HotPixelMaskerAPIX"/-->
       <processor name="Save"/>
       <processor name="EUTelUtilityPrintEventNumber"/>
    </execute>

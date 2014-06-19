@@ -18,8 +18,9 @@
    <execute>
       <processor name="AIDA"/>
       <processor name="UniversalNativeReader"/>
-      <processor name="Mimosa26EUTelAutoPedestalNoiseProcessor"/>
-      <processor name="HotPixelKiller"/>
+      <!--processor name="Mimosa26EUTelAutoPedestalNoiseProcessor"/>
+      <processor name="HotPixelKiller"/-->
+      <processor name="NewHotPixelKiller"/>
       <processor name="Save"/>
       <processor name="MyEUTelUtilityPrintEventNumber"/>
    </execute>
@@ -147,6 +148,25 @@ within the selected number of event per cycle-->
   <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
   <!--parameter name="Verbosity" type="string" value=""/-->
 </processor>
+	
+
+    <processor name="NewHotPixelKiller" type="EUTelProcessorHotPixelMasker">
+        <!--This is the name of the LCIO file name with the input/output hot pixel collection  (add .slcio)-->
+        <parameter name="HotPixelDBFile" type="string" value="@DatabasePath@/run@HotPixelRunNumber@-hotpixel-m26-db.slcio"/>
+        <parameter name="HotPixelCollectionName" type="string" value="hotpixel_m26" />
+        <!--EUTelHotPixelKiller periodically check for pixel singing loud too often and remove them from the analysis-->
+        <!--Input of Zero Suppressed data-->
+        <parameter name="ZSDataCollectionName" type="string" lcioInType="TrackerData"> zsdata_m26 </parameter>
+        <!--This float number [0,1] represents the maximum allowed firing frequency
+            within the selected number of event per cycle-->
+        <parameter name="MaxAllowedFiringFreq" type="float" value="0.01"/>
+        <!--The number of events to be considered for each update cycle-->
+        <parameter name="NoOfEvents" type="int" value="5000"/>
+        <!--The total number of hot pixel cycle-->
+      <parameter name="LCIOWriteMode" type="string" value="WRITE_NEW"/>
+      <!--The sensorID for the generated collection (one per detector)-->
+      <parameter name="SensorIDVec" type="IntVec"> 0 1 2 3 4 5</parameter>
+    </processor>
 
  <processor name="MyEUTelUtilityPrintEventNumber" type="EUTelUtilityPrintEventNumber">
  <!--EUTelUtilityPrintEventNumber prints event number to screen depending on the verbosity level-->

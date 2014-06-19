@@ -7,13 +7,13 @@
    <execute>
       <processor name="AIDA"/>
       <processor name="LoadHotPixelM26"/>
-      <processor name="LoadHotPixelAPIX"/>
+      <!--processor name="LoadHotPixelAPIX"/-->
       <processor name="ClusteringMimosa"/>
-      <processor name="ClusteringAPIX"/>
+      <!--processor name="ClusteringAPIX"/-->
       <processor name="NoisyClusterMaskerM26"/>
       <processor name="NoisyClusterRemoverM26"/>
-      <processor name="NoisyClusterMaskerAPIX"/>
-      <processor name="NoisyClusterRemoverAPIX"/>
+      <!--processor name="NoisyClusterMaskerAPIX"/-->
+      <!--processor name="NoisyClusterRemoverAPIX"/-->
       <processor name="Save"/>
       <processor name="EUTelUtilityPrintEventNumber"/>
    </execute>

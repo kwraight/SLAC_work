@@ -5,11 +5,11 @@
 <marlin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ilcsoft.desy.de/marlin/marlin.xsd">
 
    <execute>
-      <processor name="AIDA"/>
+      <!--processor name="AIDA"/>
       <processor name="UniversalNativeReader"/>
       <processor name="HotPixelMasker"/>
       <processor name="Save"/>
-      <processor name="EUTelUtilityPrintEventNumber"/>
+      <processor name="EUTelUtilityPrintEventNumber"/-->
    </execute>
 
    <global>
